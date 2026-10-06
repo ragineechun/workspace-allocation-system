@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>class-routine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/routine.css') }}">
+</head>
+<body>
+
+
+<header class="header">
+    <h1>Class Routine</h1>
+    <a href="/" class="details-link">← Go Back</a>
+    <button onclick="toggleTheme()" id="themeToggle">☀️ Light Mode</button>
+</header>
+<div id="flash-container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+</div>
+
+<form method="POST">
+  <label>Day:</label>
+  <select name="day" required>
+    <option>Monday</option>
+    <option>Tuesday</option>
+    <option>Wednesday</option>
+    <option>Thursday</option>
+    <option>Friday</option>
+  </select>
+
+  <label>Division:</label>
+  <select name="division" required>
+    <option>Division 1</option>
+    <option>Division 2</option>
+    <option>Division 3</option>
+  </select>
+
+  <hr>
+
+  {% for slot in ['Slot 1', 'Slot 2', 'Slot 3'] %}
+    <fieldset>
+      <legend>{{ slot }}</legend>
+
+      <label>Subject Period 1:</label>
+      <input type="text" name="subject_{{ slot }}_1" required>
+
+      <label>Preferred Capacity:</label>
+      <input type="number" name="capacity_{{ slot }}" min="1" required>
+
+      <label>Split into 2 periods?</label>
+      <input type="checkbox" name="split_{{ slot }}" onchange="toggleSplit('{{ slot }}')">
+
+      <div id="second_{{ slot }}" style="display: none;">
+        <label>Subject Period 2:</label>
+        <input type="text" name="subject_{{ slot }}_2">
+      </div>
+    </fieldset>
+    <hr>
+  {% endfor %}
+
+  <button type="submit">Assign All Slots</button>
+</form>
+
+
+<h2>Submitted Class Routines</h2>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>Division</th>
+      <th>Slot</th>
+      <th>Period</th>
+      <th>Subject</th>
+      <th>Room</th>
+      <th>Time Period</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for routine in routines %}
+        <tr>
+            <td>{{ routine.day }}</td>
+            <td>{{ routine.division }}</td>
+            <td>{{ routine.time_slot }} </td>
+            <td>P{{ routine.period_number }}</td>
+            <td>{{ routine.subject }}</td>
+            <td>{{ routine.room_id}}</td>
+            <td>{{ routine.start_time }} - {{ routine.end_time }}</td>
+            
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+function toggleSplit(slot) {
+  const checkbox = document.querySelector(`input[name="split_${slot}"]`);
+  const secondDiv = document.getElementById(`second_${slot}`);
+  
+  if (checkbox.checked) {
+    secondDiv.style.display = "block";
+  } else {
+    secondDiv.style.display = "none";
+  }
+}
+</script>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/workspace_List.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>Available Workspaces</h1>
+        <a href="/" class="details-link">← Go Back</a>
+
+        <button onclick="toggleTheme()" id="themeToggle">☀️ Light Mode</button>
+
+    </header>
+
+    <main class="workspace-details">
+        <div class="workspace-grid">
+            {% for workspace in workspaces %}
+            <div class="workspace-item">
+                <h3>{{ workspace.name }}</h3>
+                <p>Capacity: {{ workspace.capacity }} people</p>
+                <p>Amenities: {{ workspace.amenities }}</p>
+                <a href="{{ url_for('views.workspace_details', id=workspace.id) }}" class="details-link">Book Now</a>
+                <button onclick="openScheduleModal('{{ workspace.id }}')">View Schedule</button>
+            </div>
+            {% endfor %}
+        </div>
+    
+        <!-- Move the modal outside the loop -->
+        <div id="scheduleModal" class="modal hidden">
+
+            <div class="modal-content">
+              <button class="close" onclick="closeScheduleModal()">&times;</button>
+              <h3>Booking Schedule</h3>
+              <ul id="bookingSchedule"></ul>
+            </div>
+        </div>
+          
+    </main>
+    <script>
+        function openScheduleModal(workspaceId) {
+            fetch(`/api/bookings/${workspaceId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const scheduleList = document.getElementById('bookingSchedule');
+                    scheduleList.innerHTML = '';
+                    if (data.length === 0) {
+                        scheduleList.innerHTML = '<li>No bookings found.</li>';
+                    } else {
+                        data.forEach(entry => {
+                            let timeRange = `${entry.start_time} - ${entry.end_time}`;
+                            let label = entry.type;
+
+                            let line;
+                            if (entry.type.startsWith("Class")) {
+                                line = `${timeRange} every ${entry.day} — <strong>${label}</strong>`;
+                            } else {
+                                line = `${entry.date} | ${timeRange} — <strong>${label}</strong>`;
+                            }
+
+                            scheduleList.innerHTML += `<li>${line}</li>`;
+                        });
+                        
+                    }
+                    document.getElementById('scheduleModal').classList.remove('hidden');
+                });
+        }
+        
+        function closeScheduleModal() {
+            document.getElementById('scheduleModal').classList.add('hidden');
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('scheduleModal');
+            if (event.target === modal) {
+                closeScheduleModal();
+            }
+        }
+        
+    </script>
+
+    
+</body>
+</html>

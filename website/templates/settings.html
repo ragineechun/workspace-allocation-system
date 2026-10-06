@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Workspace Allocation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/settings.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>Account Settings</h1>
+        <a href="/" class="details-link">← Go Back</a>
+    </header>
+    <main class="settings-content container">
+        <section>
+            <h2>Email Notifications</h2>
+            <form action="#" method="POST" class="settings-form">
+                <label class="switch-label">
+                    <span>Receive updates on workspace availability</span>
+                    <label class="switch">
+                      <input type="checkbox" name="updates" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </label>
+                  
+                <label class="switch-label">
+                    <span>Receive booking reminders</span>
+                    <label class="switch">
+                      <input type="checkbox" name="reminders" checked>
+                      <span class="slider"></span>
+                    </label>
+                </label>
+                  
+                <button type="submit">Update Preferences</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Danger Zone</h2>
+            <p>Delete your account and all associated data. This action cannot be undone.</p>
+            <form action="{{ url_for('views.delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                <button type="submit" class="danger-btn">Delete Account</button>
+            </form>
+        </section>
+        
+    </main>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    
+</body>
+</html>

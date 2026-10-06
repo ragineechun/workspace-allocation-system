@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/my-bookings.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <h1>My Bookings</h1>
+        <a href="/" class="details-link">← Go Back</a>
+    </header>
+    <main class="my-booking">
+        {% if bookings %}
+            {% for booking in bookings %}
+                <div class="booking-item">
+                    <h3>{{ booking.workspace.name }}</h3>
+                    <p>Date: {{ booking.date }}</p>
+                    <form action="/cancel" method="POST">
+                        <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                        <button type="submit">Cancel Booking</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no bookings yet.</p>
+        {% endif %}
+    </main>
+    
+    
+    
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        
+        
+    </script>
+</body>
+</html>

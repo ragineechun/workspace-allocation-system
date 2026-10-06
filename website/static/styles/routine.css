@@ -1,0 +1,190 @@
+/* Routine form container */
+
+/* Header Styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #7868e6, #9b87f5);
+    padding: 1rem 2rem;
+    color: #ffffff;
+    border-bottom: 3px solid #e0e0ff;
+    border-radius: 0 0 12px 12px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.header a.details-link {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.header a.details-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+#themeToggle {
+    background: #ffffff;
+    color: #7868e6;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#themeToggle:hover {
+    background: #ecebff;
+}
+
+form {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 2rem;
+  margin: 2rem auto;
+  border-radius: 20px;
+  max-width: 800px;
+  box-shadow: 0 8px 24px rgba(155, 135, 245, 0.15);
+  border: 1px solid rgba(155, 135, 245, 0.2);
+}
+
+form label {
+  display: block;
+  margin: 0.8rem 0 0.3rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+form input[type="text"],
+form input[type="number"],
+form select {
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #f9f9ff;
+}
+
+form input[type="checkbox"] {
+  margin-top: 0.5rem;
+}
+
+fieldset {
+  border: 1px solid rgba(155, 135, 245, 0.3);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: rgba(245, 243, 255, 0.7);
+}
+
+legend {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #6b46c1;
+  padding: 0 0.5rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e0dffc;
+  margin: 1.5rem 0;
+}
+
+/* Submitted routines table */
+h2 {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.8rem;
+  color: #4c1d95;
+}
+
+table {
+  width: 90%;
+  margin: 1rem auto 3rem;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(155, 135, 245, 0.15);
+}
+
+thead {
+  background: linear-gradient(to right, #9b87f5, #7868e6);
+  color: white;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) {
+  background-color: #f3f0ff;
+}
+
+tr:hover {
+  background-color: #ede9fe;
+}
+
+/* Flash messages */
+.flash {
+  padding: 1rem;
+  margin: 1rem auto;
+  max-width: 700px;
+  text-align: center;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.flash.success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.flash.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Styling for the Assign All Slots button */
+button[type="submit"] {
+    background-color: #9b87f5; /* Soft purple background */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+    padding: 12px 24px; /* Padding for a larger button */
+    font-size: 16px; /* Increase font size */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    margin-top: 20px; /* Margin for spacing */
+}
+
+button[type="submit"]:hover {
+    background-color: #7868e6; /* Darker purple on hover */
+    transform: scale(1.05); /* Slightly scale up the button */
+}
+
+button[type="submit"]:focus {
+    outline: none; /* Remove the default focus outline */
+    box-shadow: 0 0 0 4px rgba(153, 135, 245, 0.5); /* Custom focus outline */
+}
+

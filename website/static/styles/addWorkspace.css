@@ -1,0 +1,123 @@
+/* Reset and base styles (as provided) */
+body {
+  background: linear-gradient(135deg, #9b87f5 0%, #ffffff 100%);
+  color: #111827;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Header (as provided) */
+.header {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(31, 38, 135, 0.1);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  border-color:#9b87f5 ;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #9b87f5, #7868e6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Header button (as provided) */
+.header button {
+  background: linear-gradient(to right, #9b87f5, #8a70f5);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(155, 135, 245, 0.3);
+  transition: all 0.3s ease;
+  text-decoration: none; /* To remove underline from the link inside */
+}
+
+.header button:hover {
+  background: linear-gradient(to right, #8a70f5, #7868e6);
+  box-shadow: 0 8px 20px rgba(155, 135, 245, 0.4);
+}
+
+/* Main content container */
+.settings-content.container {
+  max-width: 720px; /* Adjust as needed */
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: 20px;
+}
+
+/* Section containing the form */
+.settings-content section {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 15px 35px rgba(31, 38, 135, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+}
+
+/* Form styles */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.settings-form input[type="text"],
+.settings-form input[type="number"],
+.settings-form textarea {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #374151;
+}
+
+.settings-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.settings-form button[type="submit"] {
+  background: linear-gradient(to right, #7868e6, #9b87f5); /* Inverted gradient for submit */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(120, 104, 230, 0.3); /* Adjusted shadow color */
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.settings-form button[type="submit"]:hover {
+  background: linear-gradient(to right, #6857d8, #8a70f5); /* Darker hover */
+  box-shadow: 0 8px 20px rgba(120, 104, 230, 0.4); /* Adjusted shadow color */
+}
+
+/* Link inside the header button */
+.header button a {
+  color: white;
+  text-decoration: none; /* Remove underline */
+}
+

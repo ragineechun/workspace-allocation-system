@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Workspace Allocation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+</head>
+<body>
+    <div class="workspace-dashboard">
+      <header class="dashboard-header">
+        <div class="header-container">
+          <div class="header-left">
+            <h1>Workspace Flow Central</h1>
+          </div>
+          <nav class="main-nav">
+            <a href="/workspace">Workspaces</a>
+            <!--<a href="/floormap">View Floor Map</a>-->
+            {% if current_user.role == 'staff' or current_user.role == 'admin' %}
+              <a href="/bookings">My Bookings</a>
+            {% endif %}
+            <a href="/notification">Notifications</a>
+            {% if current_user.role == 'admin' %}
+              <a href="/work">Add Workspace</a>
+              <a href="/class-routine">Class Routine</a>
+
+            {% endif %}
+            <a href="/setting">Settings</a>
+          </nav>
+          <div class="header-right">
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      </header>
+  
+      <main class="dashboard-content">
+        <section class="welcome-section">
+          <h2>Welcome to your Dashboard</h2>
+          <p>Quick overview of your bookings and available workspaces.</p>
+        </section>
+  
+        <div class="dashboard-grid">
+          <section class="workspaces-section">
+            <h3>Recent Workspaces</h3>
+            <div class="workspace-cards">
+              {% if recent_workspaces %}
+                {% for workspace in recent_workspaces %}
+                  <div class="workspace-list">
+                    <h4>{{ workspace.name }}</h4>
+                    <p>Capacity: {{ workspace.capacity }} people</p>
+                    <p>Amenities: {{ workspace.amenities }}</p>
+                    <a href="{{ url_for('views.workspace_details', id=workspace.id) }}">View Details</a>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p>No workspaces available.</p>
+              {% endif %}
+            </div>
+          </section>
+  
+          <section class="bookings-section">
+            <h3>My Recent Bookings</h3>
+            <div class="booking-cards">
+              {% if recent_bookings %}
+                {% for booking in recent_bookings %}
+                  <div class="booking-list">
+                    <h4>{{ booking.workspace.name }}</h4>
+                    <p>Date: {{ booking.date }}</p>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p>No recent bookings.</p>
+              {% endif %}
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Handle Book button
+        document.querySelectorAll('.book-btn').forEach(button => {
+          button.addEventListener('click', function () {
+            const workspaceId = this.getAttribute('data-id');
+            showToast(`Booking request sent for workspace ${workspaceId}`);
+            // You can add AJAX booking logic here
+          });
+        });
+      
+        // Handle Cancel button
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+          button.addEventListener('click', function () {
+            const bookingId = this.getAttribute('data-id');
+            showToast(`Booking ${bookingId} cancelled`);
+            this.closest('.booking-card').classList.add('fade-out');
+            setTimeout(() => {
+              this.closest('.booking-card').remove();
+              const bookingList = document.getElementById('booking-list');
+              if (bookingList && bookingList.children.length === 0) {
+                bookingList.innerHTML = '<p class="no-data">No recent bookings.</p>';
+              }
+            }, 300);
+          });
+        });
+      
+        // Toast notification
+        function showToast(message) {
+          const toast = document.createElement('div');
+          toast.className = 'toast';
+          toast.textContent = message;
+          document.body.appendChild(toast);
+          toast.offsetHeight;
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+              document.body.removeChild(toast);
+            }, 300);
+          }, 3000);
+        }
+      });
+      
+  </script>
+  
+</html>

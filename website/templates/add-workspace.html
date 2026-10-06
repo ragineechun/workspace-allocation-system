@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Workspace</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/addWorkspace.css') }}">
+</head>
+<body>
+<main class="settings-content container">
+  <section>
+    <header class="header">
+      <h1>Add Workspace</h1>
+      <button><a href="/">Go Back</a></button>
+    </header>
+
+    <!-- Add Workspace Form -->
+    <form action="/add-workspace" method="POST" class="settings-form">
+      <label for="name">Workspace Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="capacity">Capacity:</label>
+      <input type="number" id="capacity" name="capacity" required>
+
+      <label for="floor">Floor:</label>
+      <input type="text" id="floor" name="floor" required>
+
+      <label for="amenities">Amenities:</label>
+      <textarea id="amenities" name="amenities" required></textarea>
+
+      <button type="submit">Add Workspace</button>
+    </form>
+  </section>
+
+  <section style="margin-top: 3rem;">
+    <h2>Existing Workspaces</h2>
+    <ul>
+      {% if workspaces %}
+        {% for ws in workspaces %}
+          <li>
+            {{ ws.name }} (Floor: {{ ws.floor }}, Capacity: {{ ws.capacity }})
+            <form action="/delete-workspace/{{ ws.id }}" method="POST" style="display:inline;">
+              <button type="submit" onclick="return confirm('Delete this workspace?');">Delete</button>
+            </form>
+          </li>
+        {% endfor %}
+      {% else %}
+        <p>No workspaces added yet.</p>
+      {% endif %}
+    </ul>
+
+
+  </section>
+</main>
+</body>
+</html>

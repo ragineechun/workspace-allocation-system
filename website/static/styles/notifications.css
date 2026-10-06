@@ -1,0 +1,159 @@
+/* my-bookings.css */
+
+body {
+  background: linear-gradient(135deg, #9b87f5 0%, #ffffff 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(31, 38, 135, 0.1);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #9b87f5, #7868e6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.back button {
+  background: rgba(155, 135, 245, 0.1);
+  border: none;
+  color: #7868e6;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.back button:hover {
+  background: rgba(155, 135, 245, 0.2);
+}
+
+/* Main content */
+.notifications {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Individual notification card */
+.notification-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-left: 5px solid #9b87f5;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 20px rgba(31, 38, 135, 0.1);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(31, 38, 135, 0.15);
+}
+
+.notification-item p {
+  font-size: 1rem;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.notification-item span {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* No notifications */
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(243, 244, 246, 0.7);
+  border-radius: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  box-shadow: 0 4px 15px rgba(31, 38, 135, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .notifications {
+    padding: 0 1rem;
+  }
+
+  .notification-item {
+    padding: 1rem;
+  }
+}
+.filter-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 40px auto 20px auto; /* Adds top and bottom spacing */
+    padding: 10px 20px;
+    background: #f5f5fc;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    flex-wrap: wrap;
+}
+
+.filter-form input[type="text"] {
+    flex: 1 1 200px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.filter-form input[type="text"]:focus {
+    outline: none;
+    border-color: #7868e6;
+    box-shadow: 0 0 4px rgba(120, 104, 230, 0.3);
+}
+
+.filter-form button {
+    padding: 8px 16px;
+    background-color: #7868e6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-form button:hover {
+    background-color: #5d4cc4;
+}
+

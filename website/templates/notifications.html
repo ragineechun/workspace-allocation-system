@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/notifications.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>Notifications</h1>
+        <div class="back">
+            <a href="/" class="details-link">← Go Back</a>
+        </div>
+        
+    </header>
+    <form method="get" class="filter-form">
+        <input type="text" name="keyword" placeholder="Search notifications..." value="{{ keyword }}">
+        <button type="submit">Filter</button>
+    </form>
+    
+    <main class="notifications">
+        {% if notifications %}
+            {% for notification in notifications %}
+            <div class="notification-item">
+                <p>{{ notification.message }}</p>
+                
+                <span>{{ notification.timestamp.strftime('%d %b %Y, %I:%M %p') }}</span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No notifications found.</p>
+        {% endif %}
+    </main>
+    
+    
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>Profile</h1>
+        <button onclick="goBack()">← Go Back</button>
+    </header>
+
+    <main class="profile container">
+        <h2>Your Profile</h2>
+        <p>Username: {{ user.first_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <button class="edit-profile-btn" onclick="openModal()">Edit Profile</button>
+    </main>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Edit Profile</h2>
+            <form action="/profile" method="POST" class="edit-profile-form">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Your username" value="{{ user.first_name }}" required>
+            
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your email" value="{{ user.email }}" required>
+            
+                <label for="password">New Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter new password (optional)">
+            
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById("editProfileModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("editProfileModal").style.display = "none";
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("editProfileModal")) {
+                closeModal();
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

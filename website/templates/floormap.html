@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Floor Map{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Interactive Floor Map</h2>
+    <a href="/" class="details-link">← Go Back</a>
+
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <label for="floor-select" class="me-2">Select Floor:</label>
+            <select id="floor-select" class="form-select d-inline-block w-auto">
+                <option value="1">Floor 1</option>
+                <option value="2">Floor 2</option>
+                <option value="3">Floor 3</option>
+            </select>
+        </div>
+        {% if current_user.is_admin %}
+        <button id="toggle-edit" class="btn btn-warning">Enable Edit Mode</button>
+        <button id="save-positions" class="btn btn-success d-none">Save Positions</button>
+        {% endif %}
+    </div>
+
+    <div id="floor-map" style="position: relative; width: 800px; height: 500px; border: 1px solid #ccc; background-color: #f7f7f7;">
+        <!-- Room markers will appear here -->
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const map = document.getElementById('floor-map');
+    const floorSelect = document.getElementById('floor-select');
+    const editBtn = document.getElementById('toggle-edit');
+    const saveBtn = document.getElementById('save-positions');
+    let editMode = false;
+
+    function loadRooms(floor) {
+        fetch(`/api/floor-rooms?floor=${floor}`)
+            .then(response => response.json())
+            .then(rooms => {
+                map.innerHTML = '';
+                rooms.forEach(room => {
+                    const div = document.createElement('div');
+                    div.classList.add('room-marker');
+                    div.style.left = `${room.x}px`;
+                    div.style.top = `${room.y}px`;
+                    div.textContent = room.name;
+                    div.dataset.id = room.id;
+
+                    // Link on click
+                    div.onclick = () => {
+                        if (!editMode) {
+                            window.location.href = `/workspace/${room.id}`;
+                        }
+                    };
+
+                    if (room.reserved) div.classList.add('reserved');
+
+                    if (editMode) {
+                        makeDraggable(div);
+                    }
+
+                    map.appendChild(div);
+                });
+            });
+    }
+
+    function makeDraggable(el) {
+        el.style.cursor = 'move';
+        el.onmousedown = function (e) {
+            e.preventDefault();
+            const shiftX = e.clientX - el.getBoundingClientRect().left;
+            const shiftY = e.clientY - el.getBoundingClientRect().top;
+
+            function moveAt(pageX, pageY) {
+                el.style.left = pageX - map.offsetLeft - shiftX + 'px';
+                el.style.top = pageY - map.offsetTop - shiftY + 'px';
+            }
+
+            function onMouseMove(e) {
+                moveAt(e.pageX, e.pageY);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.onmouseup = function () {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.onmouseup = null;
+            };
+        };
+        el.ondragstart = () => false;
+    }
+
+    if (editBtn && saveBtn) {
+        editBtn.addEventListener('click', () => {
+            editMode = !editMode;
+            editBtn.textContent = editMode ? 'Disable Edit Mode' : 'Enable Edit Mode';
+            saveBtn.classList.toggle('d-none', !editMode);
+            loadRooms(floorSelect.value);
+        });
+
+        saveBtn.addEventListener('click', () => {
+            const updatedPositions = [];
+            document.querySelectorAll('.room-marker').forEach(marker => {
+                const id = marker.dataset.id;
+                const x = parseInt(marker.style.left);
+                const y = parseInt(marker.style.top);
+                updatedPositions.push({ id, x, y });
+            });
+
+            fetch('/api/update-room-positions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ positions: updatedPositions })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Positions updated.');
+                editMode = false;
+                editBtn.textContent = 'Enable Edit Mode';
+                saveBtn.classList.add('d-none');
+                loadRooms(floorSelect.value);
+            });
+        });
+    }
+
+    floorSelect.addEventListener('change', () => loadRooms(floorSelect.value));
+    loadRooms(floorSelect.value);
+});
+</script>
+
+<style>
+.room-marker {
+    position: absolute;
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 8px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+}
+.room-marker.reserved {
+    background-color: #f44336;
+}
+</style>
+{% endblock %}

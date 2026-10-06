@@ -1,0 +1,25 @@
+.floor-map-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.map-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+svg {
+  background-color: #f8f8f8;
+  border: 2px solid #333;
+  width: 80%;
+  height: 300px;
+}
+
+.room-details {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  display: inline-block;
+}

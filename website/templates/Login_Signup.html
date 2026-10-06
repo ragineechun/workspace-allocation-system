@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login / Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/loginSignup.css') }}">
+</head>
+<body>
+<div class="container">
+  <h2>Welcome Back</h2>
+
+  <!-- Flask Flash Messages -->
+  <div id="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="login">Login</button>
+    <button class="tab-btn" data-tab="signup">Sign Up</button>
+  </div>
+
+  <!-- Login Form -->
+  <div class="tab-content active" id="login">
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <div class="form-group">
+        <label for="login-email">Email Address</label>
+        <input type="email" id="login-email" name="email" class="input-field" placeholder="name@example.com" required>
+        <span class="icon">✉️</span>
+        <span class="error-message">Please enter a valid email</span>
+      </div>
+
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password" class="input-field" placeholder="Enter your password" required>
+        <span class="icon">🔒</span>
+        <span class="error-message">Password cannot be empty</span>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Remember me</label>
+      </div>
+
+      <button class="btn" type="submit">Login</button>
+    </form>
+
+    <div class="switch">
+      Don't have an account? <a href="#" id="show-signup">Sign Up</a>
+    </div>
+  </div>
+
+  <!-- Sign Up Form -->
+  <div class="tab-content" id="signup">
+    <form method="POST" action="{{ url_for('auth.sign_up') }}">
+      <div class="form-group">
+        <label for="signup-name">Full Name</label>
+        <input type="text" id="signup-name" name="firstName" class="input-field" placeholder="John Doe" required>
+        <span class="icon">👤</span>
+        <span class="error-message">Please enter your name</span>
+      </div>
+
+      <div class="form-group">
+        <label for="signup-email">Email Address</label>
+        <input type="email" id="signup-email" name="email" class="input-field" placeholder="name@example.com" required>
+        <span class="icon">✉️</span>
+        <span class="error-message">Please enter a valid email</span>
+      </div>
+
+      <div class="form-group">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" name="password1" class="input-field" placeholder="Create a strong password" required>
+        <span class="icon">🔒</span>
+        <span class="error-message">Password must be at least 8 characters</span>
+      </div>
+
+      <div class="form-group">
+        <label for="signup-confirm">Confirm Password</label>
+        <input type="password" id="signup-confirm" name="password2" class="input-field" placeholder="Confirm your password" required>
+        <span class="icon">🔒</span>
+        <span class="error-message">Passwords don't match</span>
+      </div>
+
+      <div class="form-group">
+        <label for="signup-role">Role</label>
+        <select name="role" id="signup-role" class="input-field" required>
+          <option value="" disabled selected>Select role</option>
+          <option value="admin">Admin</option>
+          <option value="staff">User</option>
+        </select>
+        <span class="error-message">Please select a role</span>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="terms" required>
+        <label for="terms">I agree to the Terms and Privacy Policy</label>
+      </div>
+
+      <button class="btn" type="submit">Create Account</button>
+    </form>
+
+    <div class="switch">
+      Already have an account? <a href="#" id="show-login">Login</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const showSignup = document.getElementById('show-signup');
+    const showLogin = document.getElementById('show-login');
+
+    function switchTab(tabId) {
+      tabBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      tabContents.forEach(content => {
+        content.classList.toggle('active', content.id === tabId);
+      });
+
+      const tabsContainer = document.querySelector('.tabs');
+      if (tabId === 'signup') {
+        tabsContainer.classList.add('signup');
+      } else {
+        tabsContainer.classList.remove('signup');
+      }
+    }
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    showSignup?.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab('signup');
+    });
+
+    showLogin?.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab('login');
+    });
+
+    // Focus highlight
+    document.querySelectorAll('.input-field').forEach(input => {
+      input.addEventListener('focus', () => input.parentElement.classList.add('focused'));
+      input.addEventListener('blur', () => {
+        if (!input.value) input.parentElement.classList.remove('focused');
+      });
+    });
+  });
+</script>
+<script>
+  setTimeout(function() {
+    const flashes = document.querySelectorAll('.flash');
+    flashes.forEach(flash => {
+      flash.style.opacity = '0';
+      setTimeout(() => flash.remove(), 1000);  // Remove after fade
+    });
+  }, 3000);  // 3 seconds delay
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review Booking Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/review-bookings.css') }}">
+</head>
+<body>
+    <div class="review-container">
+        <h1>Pending Booking Requests</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% if pending_bookings %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Workspace</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Requested By</th>
+                        <th>Details</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in pending_bookings %}
+                    <tr>
+                        <td>{{ booking.workspace.name }}</td>
+                        <td>{{ booking.date.strftime('%d %b %Y') }}</td>
+                        <td>{{ booking.start_time.strftime('%I:%M %p') }} - {{ booking.end_time.strftime('%I:%M %p') }}</td>
+                        <td>{{ booking.user.first_name }} ({{ booking.user.email }})</td>
+                        <td>{{ booking.details or 'N/A' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('views.approve_booking') }}" style="display:inline;">
+                                <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                                <button type="submit">Approve</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('views.reject_booking') }}" style="display:inline;">
+                                <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                                <button type="submit">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No pending booking requests.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

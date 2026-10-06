@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Workspace Details</title> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/workspace_details.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div id="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </div>
+        <h1>Workspace Details</h1>
+        <a href="/" class="details-link">← Go Back</a>
+    </header>
+    
+    <main class="workspace-details">
+        <div class="workspace-item">
+            <h2>{{ workspace.name }}</h2>
+            <p>Capacity: {{ workspace.capacity }} people</p>
+            <p>Amenities: {{ workspace.amenities }}</p>
+                {% if current_user.role == 'staff' or current_user.role == 'admin' %}
+                    <button onclick="openModal()">Reserve</button>
+                {% endif %}
+
+        </div>
+    </main>
+    
+
+    <!-- Modal -->
+    <div id="reservationModal" class="modal">
+        <div id="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </div>
+        
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            
+            <h2>Reserve Workspace</h2>
+            <form action="/reserve" method="POST">
+                
+                
+                <!-- Use the dynamic workspace ID -->
+                <input type="hidden" name="workspace_id" value="{{ workspace.id }}">
+                <label for="date">Select Reservation Date:</label>
+                
+
+                <input type="date" id="date" name="date" required onchange="checkAvailability()">
+                <p id="availability-message" class="availability-status"></p>
+                <label for="start_time">Start Time:</label>
+                <input type="time" id="start_time" name="start_time" step="60" required>
+
+                <label for="end_time">End Time:</label>
+                <input type="time" id="end_time" name="end_time" step="60" required>
+                <label for="details">Additional Details:</label>
+                <textarea id="details" name="details" placeholder="Enter additional information (optional)"></textarea>
+                <button type="submit" id="submitBtn">Confirm Reservation</button>
+
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = false;  // Enable by default
+
+        if (bookingsForDate.length === 0) {
+            messageElem.textContent = "Available all day.";
+            messageElem.style.color = "green";
+            submitBtn.disabled = false;
+        } else {
+            let times = bookingsForDate.map(b => `${b.start_time} - ${b.end_time}`).join(', ');
+            messageElem.textContent = "Already booked: " + times;
+            messageElem.style.color = "red";
+            // Optional: disable if fully booked for that day
+            submitBtn.disabled = true;
+        }
+
+        function checkAvailability() {
+            const date = document.getElementById('date').value;
+            const workspaceId = "{{ workspace.id }}";
+
+            const messageElem = document.getElementById('availability-message');
+        
+            if (!date) {
+                messageElem.textContent = '';
+                return;
+            }
+        
+            fetch(`/api/bookings/${workspaceId}?date=${date}`)
+
+                .then(response => response.json())
+                .then(bookings => {
+                    const bookingsForDate = bookings.filter(b => b.date === date);
+                    if (bookingsForDate.length === 0) {
+                        messageElem.textContent = "Available all day.";
+                        messageElem.style.color = "green";
+                    } else {
+                        let times = bookingsForDate.map(b => `${b.start_time} - ${b.end_time}`).join(', ');
+                        messageElem.textContent = "Already booked: " + times;
+                        messageElem.style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching bookings:', error);
+                    messageElem.textContent = "Could not check availability.";
+                    messageElem.style.color = "orange";
+                });
+        }
+        
+        
+            
+          
+        // Open the modal
+        function openModal() {
+            document.getElementById('reservationModal').style.display = 'block';
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById('reservationModal').style.display = 'none';
+        }
+
+        // Go back to previous page
+        function goBack() {
+            window.history.back();
+        }
+
+        // Close the modal if clicked outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById('reservationModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+    <script>
+        setTimeout(function() {
+          const flashes = document.querySelectorAll('.flash');
+          flashes.forEach(flash => {
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 1000);  // Remove after fade
+          });
+        }, 2000);  // 3 seconds delay
+      </script>
+      
+</body>
+</html>
