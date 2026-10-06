@@ -65,3 +65,4 @@ This was a team project.
 
 - **Raginee Chunkhare** – frontend pages (HTML/CSS templates), design and testing
 - **Souvik** – teammate
+- **Vedika**
